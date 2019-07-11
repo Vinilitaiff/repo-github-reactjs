@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 export const Container = styled.div`
   max-width: 700px;
@@ -34,6 +34,16 @@ export const Form = styled.form`
   }
 `;
 
+//  animacao de girar o SubmitButton
+const rotate = keyframes`
+from {
+  transform:rotate(0deg);
+}
+to{
+  transform:rotate(360deg);
+}
+`;
+
 export const SubmitButton = styled.button.attrs(props => ({
   type: 'submit',
   disabled: props.loading,
@@ -51,5 +61,36 @@ export const SubmitButton = styled.button.attrs(props => ({
   &[disabled] {
     cursor: not-allowed;
     opacity: 0.6;
+  }
+  /*regra para o loading = true entao fazer a animacao de rotate*/
+  ${props =>
+    props.loading &&
+    css`
+      svg {
+        animation: ${rotate} 2s linear infinite;
+      }
+    `}
+`;
+
+export const List = styled.ul`
+  list-style: none;
+  margin-top: 30px;
+
+  li {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* colocar lado a lado*/
+    align-items: center;
+
+    /* varifica se tem um li anterior e adiciona uma border */
+    & + li {
+      border-top: 1px solid #eee;
+    }
+
+    a {
+      color: #7159c1;
+      text-decoration: none;
+    }
   }
 `;
