@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
+
 import Container from '../../components/Container';
 import { Loading, Owner, IssuesList } from './styles';
 
@@ -18,10 +19,18 @@ export default class Repository extends Component {
     repository: {},
     issues: [],
     loading: true,
+    filters: [
+      { state: 'all', label: 'Todas', active: true },
+      { state: 'open', label: 'Abertas', active: false },
+      { state: 'closed', label: 'Fechadas', active: false },
+    ],
+    filterIndex: 0,
+    page: 1,
   };
 
   async componentDidMount() {
     const { match } = this.props;
+    const { filters } = this.state;
     // pegar o valor da url
     const repoName = decodeURIComponent(match.params.repository);
 
@@ -30,7 +39,7 @@ export default class Repository extends Component {
       api.get(`/repos/${repoName}/issues`),
       {
         params: {
-          state: 'open',
+          state: filters.find(f => f.active).state,
           per_page: 5,
         },
       },
@@ -42,6 +51,23 @@ export default class Repository extends Component {
       issues: issues.data,
     });
   }
+
+  loadIssues = async () => {
+    const { match } = this.props;
+    const { filterIndex, filters, page } = this.state;
+
+    const repoName = decodeURIComponent(match.params.repository);
+
+    const response = await api.get(`/repo/${repoName}/issues`, {
+      params: {
+        state: filters[filterIndex].state,
+        per_page: 5,
+        page,
+      },
+    });
+
+    this.setState({ issues: response.data });
+  };
 
   render() {
     const { repository, loading, issues } = this.state;
