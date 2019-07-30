@@ -42,6 +42,23 @@ export const Owner = styled.div`
   }
 `;
 
+export const IssuesFilter = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+  button {
+    border-radius: 4px;
+    outline: 0;
+    border: 0;
+    padding: 8px;
+    margin: 0 0.25rem;
+    &:nth-child(${props => props.active + 1}) {
+      background: #576574;
+      color: white;
+    }
+  }
+`;
+
 export const IssuesList = styled.ul`
   padding-top: 30px;
   margin-top: 30px;
@@ -96,6 +113,25 @@ export const IssuesList = styled.ul`
       margin-top: 5px;
       font-size: 12px;
       color: #999;
+    }
+  }
+`;
+
+export const IssuePagination = styled.div`
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  button {
+    outline: 0;
+    border: 0;
+    padding: 5px;
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    &:hover:not([disabled]) {
+      color: #7159c1;
     }
   }
 `;
